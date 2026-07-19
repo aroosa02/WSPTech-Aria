@@ -5,12 +5,14 @@ interface TopAppBarProps {
   language: Language;
   onLanguageChange: (lang: Language) => void;
   onNewConversation: () => void;
+  onSwitchToAdmin?: () => void;
 }
 
 export const TopAppBar: React.FC<TopAppBarProps> = ({
   language,
   onLanguageChange,
   onNewConversation,
+  onSwitchToAdmin,
 }) => {
   const t = translations[language];
 
@@ -39,12 +41,23 @@ export const TopAppBar: React.FC<TopAppBarProps> = ({
             </button>
           </div>
         </div>
-        <button
-          onClick={onNewConversation}
-          className="bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] text-white px-4 py-2 rounded-full font-label-sm shadow-lg shadow-blue-500/20 active:scale-95 transition-all duration-150 focus:outline-none hover:brightness-110"
-        >
-          {t.newConversation}
-        </button>
+        <div className="flex items-center gap-3">
+          {onSwitchToAdmin && (
+            <button
+              onClick={onSwitchToAdmin}
+              className="flex items-center gap-1.5 bg-gradient-to-r from-[#3B82F6]/20 to-[#60A5FA]/20 hover:from-[#3B82F6]/30 hover:to-[#60A5FA]/30 text-[#60A5FA] border border-[#60a5fa]/30 px-4 py-2 rounded-full font-label-sm font-bold active:scale-95 transition-all duration-150 focus:outline-none"
+            >
+              <span className="material-symbols-outlined text-sm">admin_panel_settings</span>
+              <span>Admin Dashboard</span>
+            </button>
+          )}
+          <button
+            onClick={onNewConversation}
+            className="bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] text-white px-4 py-2 rounded-full font-label-sm shadow-lg shadow-blue-500/20 active:scale-95 transition-all duration-150 focus:outline-none hover:brightness-110"
+          >
+            {t.newConversation}
+          </button>
+        </div>
       </div>
     </header>
   );

@@ -7,6 +7,7 @@ import { HandoffStatus } from './components/HandoffStatus';
 import { InputBar } from './components/InputBar';
 import { translations } from './lib/translations';
 import type { Language } from './lib/translations';
+import { AdminDashboardPage } from './pages/AdminDashboardPage';
 
 interface Message {
   id: string;
@@ -29,6 +30,7 @@ function App() {
   const [connectProgress, setConnectProgress] = useState<number>(0);
   const [agentConnected, setAgentConnected] = useState<boolean>(false);
   const [messageCount, setMessageCount] = useState<number>(0);
+  const [isAdminMode, setIsAdminMode] = useState<boolean>(false);
 
   // Preloaded messages matching the design specification
   const [messages, setMessages] = useState<Message[]>([
@@ -220,6 +222,17 @@ function App() {
 
   const t = translations[language];
 
+  if (isAdminMode) {
+    return (
+      <AdminDashboardPage
+        language={language}
+        onLanguageChange={setLanguage}
+        onSwitchToClient={() => setIsAdminMode(false)}
+        onLogout={handleLogout}
+      />
+    );
+  }
+
   return (
     <div className="bg-background text-on-background font-body-md min-h-screen relative overflow-x-hidden selection:bg-secondary/30">
       {/* Background Glow */}
@@ -232,6 +245,7 @@ function App() {
         language={language}
         onLanguageChange={setLanguage}
         onNewConversation={handleNewConversation}
+        onSwitchToAdmin={() => setIsAdminMode(true)}
       />
 
       {/* Sidebar Nav */}
