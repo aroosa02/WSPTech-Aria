@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { translations } from '../lib/translations';
 import type { Language } from '../lib/translations';
 import { KnowledgeBasePage } from './KnowledgeBasePage';
+import { ConversationDashboardPage } from './ConversationDashboardPage';
 
 interface AdminDashboardPageProps {
   language: Language;
@@ -16,7 +17,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
   onSwitchToClient,
   onLogout,
 }) => {
-  const [activeAdminTab, setActiveAdminTab] = useState<string>('conversations');
+  const [activeAdminTab, setActiveAdminTab] = useState<string>('analytics');
   const [timeRange, setTimeRange] = useState<'7days' | '30days'>('7days');
   
   const t = translations[language];
@@ -120,6 +121,17 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
 
         <nav className="flex-1 flex flex-col gap-1 px-2">
           <button
+            onClick={() => setActiveAdminTab('analytics')}
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all ${
+              activeAdminTab === 'analytics'
+                ? 'bg-secondary/10 text-secondary font-medium'
+                : 'text-on-surface-variant hover:bg-white/5'
+            }`}
+          >
+            <span className="material-symbols-outlined">dashboard</span>
+            <span className="font-body-md">Analytics</span>
+          </button>
+          <button
             onClick={() => setActiveAdminTab('conversations')}
             className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all ${
               activeAdminTab === 'conversations'
@@ -127,7 +139,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                 : 'text-on-surface-variant hover:bg-white/5'
             }`}
           >
-            <span className="material-symbols-outlined">dashboard</span>
+            <span className="material-symbols-outlined">chat</span>
             <span className="font-body-md">Conversations</span>
           </button>
           <button
@@ -242,7 +254,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
 
         {/* Content Area */}
         <main className="flex-1 p-8 overflow-y-auto">
-          {activeAdminTab === 'conversations' && (
+          {activeAdminTab === 'analytics' && (
             <div className="space-y-6">
               
               {/* Analytics Metrics Cards */}
@@ -389,6 +401,10 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
               </div>
 
             </div>
+          )}
+
+          {activeAdminTab === 'conversations' && (
+            <ConversationDashboardPage language={language} />
           )}
 
           {activeAdminTab === 'knowledge' && (
